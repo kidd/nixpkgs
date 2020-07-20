@@ -3,6 +3,7 @@
 , pkgs
 , reattach-to-user-namespace
 , stdenv
+, rustPlatform
 }:
 
 let
@@ -120,6 +121,48 @@ in rec {
       fetchSubmodules = true;
     };
     dependencies = [ pkgs.gawk ];
+  };
+
+  thumbs = let
+  thumbs_rs = rustPlatform.buildRustPackage rec {
+    pname = "tmux-thumbs";
+    version = "ac5bb49";
+    src = fetchFromGitHub {
+      owner = "fcsonline";
+      repo = "tmux-thumbs";
+      rev = version;
+      sha256 = "0ix829pbqc7ak0idww1fnw3q39yqbz3rhmwgwwxb1sijbmjk8aq9";
+      fetchSubmodules = true;
+    };
+    preBuild=''
+    sed -i -e "s|{}/target/release/thumbs|$out/bin/thumbs|g" src/swapper.rs
+    sed -i -e 's|^ *self.dir,||g'  src/swapper.rs
+    '';
+
+    cargoSha256 = "1jkd933596yp8xja0sqpbfa5vp8fq7y0q47wkvj525v73y6q6arz";
+    meta = with stdenv.lib; {
+      description = "Open Source HTTP Reverse Proxy built in Rust for Immutable Infrastructures";
+      homepage = "https://sozu.io";
+      license = licenses.agpl3;
+      maintainers = with maintainers; [ filalex77 ];
+    };
+  };
+  in
+  mkDerivation rec {
+    pluginName = "thumbs";
+    version = "ac5bb49";
+    src = fetchFromGitHub {
+      owner = "fcsonline";
+      repo = "tmux-thumbs";
+      rev = version;
+      sha256 = "0ix829pbqc7ak0idww1fnw3q39yqbz3rhmwgwwxb1sijbmjk8aq9";
+      fetchSubmodules = true;
+    };
+    dependencies = [ thumbs_rs ];
+    postInstall = ''
+      sed -i -e 's|=".*/target/release/thumbs"|="${thumbs_rs}/bin/thumbs"|g' $target/tmux-thumbs.tmux
+      sed -i -e 's|.*/target/release/tmux-thumbs |${thumbs_rs}/bin/tmux-thumbs |g' $target/tmux-thumbs.sh
+    '';
   };
 
   fpp = mkDerivation {

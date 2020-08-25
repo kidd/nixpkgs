@@ -1,13 +1,15 @@
-{ stdenv, stdenv_32bit, pkgsi686Linux, fetchFromGitHub, fetchurl }:
+{ stdenv, stdenv_32bit, pkgsi686Linux, fetchFromGitHub, fetchurl,
+  glib, gtk3, gsettings-desktop-schemas, libX11, libXtst, libXfixes,
+  libXcursor , cairo}:
 
 stdenv.mkDerivation rec {
   pname = "red";
-  version = "0.6.4";
+  version = "0.6.4-git";
   src = fetchFromGitHub {
-    rev = "755eb943ccea9e78c2cab0f20b313a52404355cb";
+    rev = "b3a77d3783278ca8f3992eb19e96ee7c560a88ad";
     owner = "red";
     repo = "red";
-    sha256 = "sha256:045rrg9666zczgrwyyyglivzdzja103s52b0fzj7hqmr1fz68q37";
+    sha256 = "sha256:0xzdpxxqqlxxjadnsx98vjyaid10pga25csxyjr6ci027d0mc49m";
   };
 
   rebol = fetchurl {
@@ -15,7 +17,8 @@ stdenv.mkDerivation rec {
     sha256 = "1c1v0pyhf3d8z98qc93a5zmx0bbl0qq5lr8mbkdgygqsq2bv2xbz";
   };
 
-  buildInputs = [ pkgsi686Linux.curl stdenv_32bit ];
+  buildInputs = [ pkgsi686Linux.curl stdenv_32bit cairo glib gtk3
+    gsettings-desktop-schemas libX11 libXtst libXfixes libXcursor ];
 
   r2 = "./rebol/releases/rebol-core/rebol";
 
@@ -38,11 +41,14 @@ stdenv.mkDerivation rec {
     # Compiling the Red console...
     ${r2} -qw red.r -r environment/console/CLI/console.red
 
+    # Compiling the Red GUI console...
+    ${r2} -qw red.r -r environment/console/GUI/gui-console.red
+
     # Generating docs...
-    cd docs
-    ../${r2} -qw makedoc2.r red-system-specs.txt
-    ../${r2} -qw makedoc2.r red-system-quick-test.txt
-    cd ../
+    cd docs/red-system
+    ../../${r2} -qw makedoc2.r red-system-specs.txt
+    ../../${r2} -qw makedoc2.r red-system-quick-test.txt
+    cd ../../
   '';
 
   installPhase = ''
@@ -54,13 +60,14 @@ stdenv.mkDerivation rec {
     cp -R * $out/opt/red/
     rm -rf $out/opt/red/rebol
     install -Dm755 console $out/bin/red
+    install -Dm755 gui-console $out/bin/red-gui
     install -Dm644 BSD-3-License.txt                          \
         $out/share/licenses/${pname}-${version}/BSD-3-License.txt
     install -Dm644 BSL-License.txt                            \
         $out/share/licenses/${pname}-${version}/BSL-License.txt
-    install -Dm644 docs/red-system-quick-test.html            \
+    install -Dm644 docs/red-system/red-system-quick-test.html            \
         $out/share/doc/${pname}-${version}/red-system-quick-test.html
-    install -Dm644 docs/red-system-specs.html                 \
+    install -Dm644 docs/red-system/red-system-specs.html                 \
         $out/share/doc/${pname}-${version}/red-system-specs.html
 
     # PathElf
@@ -69,6 +76,13 @@ stdenv.mkDerivation rec {
         $out/opt/red/console
     patchelf --set-rpath ${pkgsi686Linux.curl.out}/lib \
         $out/opt/red/console
+
+    patchelf --set-interpreter                            \
+        ${stdenv_32bit.cc.libc.out}/lib/32/ld-linux.so.2  \
+        $out/bin/red-gui
+    patchelf --set-rpath ${pkgsi686Linux.curl.out}/lib \
+        $out/bin/red-gui
+
     patchelf --set-interpreter                            \
         ${stdenv_32bit.cc.libc.out}/lib/32/ld-linux.so.2  \
         $out/bin/red

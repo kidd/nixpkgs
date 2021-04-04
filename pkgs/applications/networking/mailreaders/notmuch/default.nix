@@ -12,7 +12,7 @@
 with lib;
 
 stdenv.mkDerivation rec {
-  version = "0.31";
+  version = "0.31.4";
   pname = "notmuch";
 
   passthru = {
@@ -22,7 +22,7 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://git.notmuchmail.org/git/notmuch";
-    sha256 = "0f9d9k9avb46yh2r8fvijvw7bryqwckvyzc68f9phax2g4c99x4x";
+    sha256 = "sha256-M+LEf257OcDlHOCYYxzEVQpop+i2gzO/QJPdajz/CRM=";
     rev = version;
   };
 

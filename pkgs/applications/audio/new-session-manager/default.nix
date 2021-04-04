@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation rec {
   pname = "new-session-manager";
-  version = "1.4.0";
+  version = "1.5.1";
 
   src = fetchFromGitHub {
     owner = "linuxaudio";
     repo = "new-session-manager";
     rev = "v${version}";
-    sha256 = "PqOv4tx3NLxL2+GWIUVgL72EQYMyDPIMrAkyby3TZ+0=";
+    sha256 = "sha256-hcw+Fn5s1S786eqmR95RmkFcIaRzWaH38YE9DXVQJU0=";
   };
 
   nativeBuildInputs = [ meson pkg-config ninja ];

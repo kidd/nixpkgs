@@ -1,5 +1,5 @@
-{ stdenv, fetchurl, cmake, qtbase, pkg-config, python3Packages, dbus-glib, dbus
-, telepathy-farstream, telepathy-glib, fetchpatch }:
+{ lib, stdenv, fetchurl, cmake, qtbase, pkg-config, python3Packages, dbus-glib, dbus
+, telepathy-farstream, telepathy-glib }:
 
 let
   inherit (python3Packages) python dbus-python;
@@ -18,11 +18,13 @@ in stdenv.mkDerivation rec {
 
   # No point in building tests if they are not run
   # On 0.9.7, they do not even build with QT4
-  cmakeFlags = stdenv.lib.optional (!doCheck) "-DENABLE_TESTS=OFF";
+  cmakeFlags = lib.optional (!doCheck) "-DENABLE_TESTS=OFF";
+
+  dontWrapQtApps = true;
 
   doCheck = false; # giving up for now
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Telepathy Qt bindings";
     homepage = "https://telepathy.freedesktop.org/components/telepathy-qt/";
     license = licenses.lgpl21;

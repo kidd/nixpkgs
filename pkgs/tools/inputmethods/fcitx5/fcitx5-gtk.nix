@@ -1,5 +1,4 @@
 { lib, stdenv
-, fetchurl
 , fetchFromGitHub
 , cmake
 , extra-cmake-modules
@@ -7,6 +6,7 @@
 , gobject-introspection
 , gtk2
 , gtk3
+, gtk4
 , pcre
 , libuuid
 , libselinux
@@ -24,13 +24,13 @@
 
 stdenv.mkDerivation rec {
   pname = "fcitx5-gtk";
-  version = "5.0.1";
+  version = "5.0.3";
 
   src = fetchFromGitHub {
     owner = "fcitx";
     repo = "fcitx5-gtk";
     rev = version;
-    sha256 = "rkusIqMRQMTjcpJR335as1xUQrzD9dLVB/wrLstPXPY=";
+    sha256 = "sha256-+BzXbZyzC3fvLqysufblk0zK9fAg5jslVdm/v3jz4B4=";
   };
 
   cmakeFlags = [
@@ -40,6 +40,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [
     gtk3
+    gtk4
     gobject-introspection
     fcitx5
     pcre

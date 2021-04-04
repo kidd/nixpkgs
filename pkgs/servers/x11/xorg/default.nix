@@ -1015,11 +1015,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   libXt = callPackage ({ stdenv, pkg-config, fetchurl, libICE, xorgproto, libSM, libX11 }: stdenv.mkDerivation {
-    name = "libXt-1.2.0";
+    name = "libXt-1.2.1";
     builder = ./builder.sh;
     src = fetchurl {
-      url = "mirror://xorg/individual/lib/libXt-1.2.0.tar.bz2";
-      sha256 = "0cbqlyssr8aia88c8i7z59z9d0kp3p2hp6683xhz9ndyv8qza7dk";
+      url = "mirror://xorg/individual/lib/libXt-1.2.1.tar.bz2";
+      sha256 = "0q1x7842r8rcn2m0q4q9f69h4qa097fyizs8brzx5ns62s7w1737";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkg-config ];
@@ -1340,11 +1340,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   utilmacros = callPackage ({ stdenv, pkg-config, fetchurl }: stdenv.mkDerivation {
-    name = "util-macros-1.19.2";
+    name = "util-macros-1.19.3";
     builder = ./builder.sh;
     src = fetchurl {
-      url = "mirror://xorg/individual/util/util-macros-1.19.2.tar.bz2";
-      sha256 = "04p7ydqxgq37jklnfj18b70zsifiz4h50wvrk94i2112mmv37r6p";
+      url = "mirror://xorg/individual/util/util-macros-1.19.3.tar.bz2";
+      sha256 = "0w8ryfqylprz37zj9grl4jzdsqq67ibfwq5raj7vm1i7kmp2x08g";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkg-config ];
@@ -2029,11 +2029,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   xf86videonouveau = callPackage ({ stdenv, pkg-config, fetchurl, xorgproto, libdrm, udev, libpciaccess, xorgserver }: stdenv.mkDerivation {
-    name = "xf86-video-nouveau-1.0.16";
+    name = "xf86-video-nouveau-1.0.17";
     builder = ./builder.sh;
     src = fetchurl {
-      url = "mirror://xorg/individual/driver/xf86-video-nouveau-1.0.16.tar.bz2";
-      sha256 = "01mz8gnq7j6bvrqb2ljm3d1wpjhi9p2z2w8zbkdrqmqmcj060h1h";
+      url = "mirror://xorg/individual/driver/xf86-video-nouveau-1.0.17.tar.bz2";
+      sha256 = "0sqm1jwjg15sp8v7039y2hsbhph8gpjd2bdzcqqiij2mgbi254s9";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkg-config ];
@@ -2471,11 +2471,11 @@ lib.makeScope newScope (self: with self; {
   }) {};
 
   xkbcomp = callPackage ({ stdenv, pkg-config, fetchurl, libX11, libxkbfile, xorgproto }: stdenv.mkDerivation {
-    name = "xkbcomp-1.4.4";
+    name = "xkbcomp-1.4.5";
     builder = ./builder.sh;
     src = fetchurl {
-      url = "mirror://xorg/individual/app/xkbcomp-1.4.4.tar.bz2";
-      sha256 = "0zpjkbap9160pdd6jpgb5f0yg5281w0rkkx1l0i7g887lq1ydk2r";
+      url = "mirror://xorg/individual/app/xkbcomp-1.4.5.tar.bz2";
+      sha256 = "0pmhshqinwqh5rip670l3szjpywky67hv232ql6gvdj489n0hlb8";
     };
     hardeningDisable = [ "bindnow" "relro" ];
     nativeBuildInputs = [ pkg-config ];

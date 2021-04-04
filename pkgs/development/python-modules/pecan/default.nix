@@ -1,4 +1,4 @@
-{ lib, stdenv
+{ lib
 , fetchPypi
 , buildPythonPackage
 , isPy27
@@ -16,7 +16,6 @@
 , Kajiki
 , mock
 , sqlalchemy
-, uwsgi
 , virtualenv
 }:
 
@@ -45,7 +44,7 @@ buildPythonPackage rec {
     mock
     sqlalchemy
     virtualenv
-  ] ++ stdenv.lib.optionals isPy27 [ Kajiki ];
+  ] ++ lib.optionals isPy27 [ Kajiki ];
 
   pytestFlagsArray = [
     "--pyargs pecan "

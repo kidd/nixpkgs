@@ -1,4 +1,4 @@
-{ stdenv, ffmpeg, addOpenGLRunpath, fetchurl, fetchpatch, pkg-config, perl, texinfo, yasm
+{ lib, stdenv, ffmpeg, addOpenGLRunpath, fetchurl, fetchpatch, pkg-config, perl, texinfo, yasm
 /*
  *  Licensing options (yes some are listed twice, filters and such are not listed)
  */
@@ -184,7 +184,7 @@
 
 let
   inherit (stdenv) isCygwin isDarwin isFreeBSD isLinux isAarch64;
-  inherit (stdenv.lib) optional optionals optionalString enableFeature;
+  inherit (lib) optional optionals optionalString enableFeature;
 in
 
 /*
@@ -246,11 +246,6 @@ stdenv.mkDerivation rec {
 
   # this should go away in the next release
   patches = [
-    (fetchpatch {
-      url = "https://git.videolan.org/?p=ffmpeg.git;a=patch;h=7c59e1b0f285cd7c7b35fcd71f49c5fd52cf9315";
-      sha256 = "sha256-dqpmpDFETTuWHWolMoLaubU4BeDEuQaBNA0wmzL1f8o=";
-      name = "fix_libsrt.patch";
-    })
     # Patch ffmpeg for svt-av1 until version 4.4
     (fetchpatch {
       url = "https://raw.githubusercontent.com/AOMediaCodec/SVT-AV1/v0.8.4/ffmpeg_plugin/0001-Add-ability-for-ffmpeg-to-run-svt-av1.patch";
@@ -260,9 +255,9 @@ stdenv.mkDerivation rec {
 
   prePatch = ''
     patchShebangs .
-  '' + stdenv.lib.optionalString stdenv.isDarwin ''
+  '' + lib.optionalString stdenv.isDarwin ''
     sed -i 's/#ifndef __MAC_10_11/#if 1/' ./libavcodec/audiotoolboxdec.c
-  '' + stdenv.lib.optionalString (frei0r != null) ''
+  '' + lib.optionalString (frei0r != null) ''
     substituteInPlace libavfilter/vf_frei0r.c \
       --replace /usr/local/lib/frei0r-1 ${frei0r}/lib/frei0r-1
     substituteInPlace doc/filters.texi \
@@ -467,7 +462,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "A complete, cross-platform solution to record, convert and stream audio and video";
     homepage = "https://www.ffmpeg.org/";
     longDescription = ''

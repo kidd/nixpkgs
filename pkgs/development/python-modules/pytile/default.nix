@@ -1,31 +1,31 @@
 { lib
 , aiohttp
-, async-timeout
 , aresponses
 , buildPythonPackage
 , fetchFromGitHub
-, poetry
+, poetry-core
 , pylint
 , pytest-aiohttp
 , pytest-asyncio
 , pytestCheckHook
 , pythonAtLeast
 }:
+
 buildPythonPackage rec {
   pname = "pytile";
-  version = "5.1.0";
+  version = "5.2.1";
   disabled = pythonAtLeast "3.9";
 
   src = fetchFromGitHub {
     owner = "bachya";
     repo = pname;
     rev = version;
-    sha256 = "0hdyb8ca4ihqf7yfkr3hbpkwz7g182ycra151y5dxn0319fillc3";
+    sha256 = "0d63xga4gjlfl9fzv3i4j605rrx2qgbzam6cl609ny96s8q8h1px";
   };
 
   format = "pyproject";
 
-  nativeBuildInputs = [ poetry ];
+  nativeBuildInputs = [ poetry-core ];
 
   propagatedBuildInputs = [
     aiohttp

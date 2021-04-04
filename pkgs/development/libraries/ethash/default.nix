@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, cmake, gbenchmark, gtest }:
+{ lib, stdenv, fetchFromGitHub, cmake, gbenchmark, gtest }:
 
 stdenv.mkDerivation rec {
   pname = "ethash";
@@ -37,10 +37,10 @@ stdenv.mkDerivation rec {
     #"-DCMAKE_PREFIX_PATH=${gtest.dev}/lib/cmake"
   ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "PoW algorithm for Ethereum 1.0 based on Dagger-Hashimoto";
     homepage = "https://github.com/ethereum/ethash";
-    platforms = [ "x86_64-linux" ];
+    platforms = platforms.unix;
     maintainers = with maintainers; [ nand0p ];
     license = licenses.asl20;
   };

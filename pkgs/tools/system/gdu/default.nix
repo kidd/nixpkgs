@@ -2,25 +2,40 @@
 , stdenv
 , buildGoModule
 , fetchFromGitHub
+, installShellFiles
 }:
 
 buildGoModule rec {
   pname = "gdu";
-  version = "3.0.0";
+  version = "4.9.1";
 
   src = fetchFromGitHub {
     owner = "dundee";
     repo = pname;
     rev = "v${version}";
-    sha256 = "0sfb8bxvdd8r05d0bgfcaw6dpbky7f4fgf0dbly7k7sgl29hkafy";
+    sha256 = "sha256-blvnwsmcHf0yH2C/NUCsVQECIH4SI0BTNiMzCuNd0H0=";
   };
 
-  vendorSha256 = "0w3k23kly8g9mf8a300xz6bv7g1m2nlp5f112k4viyi9zy6vqbv0";
+  vendorSha256 = "sha256-QiO5p0x8kmIN6f0uYS0IR2MlWtRYTHeZpW6Nmupjias=";
 
-  buildFlagsArray = [ "-ldflags=-s -w -X github.com/dundee/gdu/build.Version=${version}" ];
+  nativeBuildInputs = [ installShellFiles ];
 
-  # tests fail if the version is set
-  doCheck = false;
+  buildFlagsArray = [
+    "-ldflags="
+    "-s"
+    "-w"
+    "-X github.com/dundee/gdu/v${lib.versions.major version}/build.Version=${version}"
+  ];
+
+  postPatch = ''
+    substituteInPlace cmd/app/app_test.go --replace "development" "${version}"
+  '';
+
+  postInstall = ''
+    installManPage gdu.1
+  '';
+
+  doCheck = !(stdenv.isAarch64 || stdenv.isDarwin);
 
   meta = with lib; {
     description = "Disk usage analyzer with console interface";

@@ -1,6 +1,5 @@
 { lib, stdenv
 , fetchgit
-, fetchpatch
 , autoreconfHook
 , pkg-config
 , ell
@@ -13,12 +12,12 @@
 
 stdenv.mkDerivation rec {
   pname = "iwd";
-  version = "1.10";
+  version = "1.12";
 
   src = fetchgit {
     url = "https://git.kernel.org/pub/scm/network/wireless/iwd.git";
     rev = version;
-    sha256 = "0gzpdgfwzlqj2n3amf2zhi2hlpa412878yphgx79y6b5gn1y1lm2";
+    sha256 = "sha256-o3Vc5p/AFZwbkEWJZzO6wWAJ/BmSh0eKxdnjm5B9BFU=";
   };
 
   outputs = [ "out" "man" ]
@@ -88,7 +87,7 @@ stdenv.mkDerivation rec {
   meta = with lib; {
     homepage = "https://git.kernel.org/pub/scm/network/wireless/iwd.git";
     description = "Wireless daemon for Linux";
-    license = licenses.lgpl21;
+    license = licenses.lgpl21Plus;
     platforms = platforms.linux;
     maintainers = with maintainers; [ dtzWill fpletz ];
   };

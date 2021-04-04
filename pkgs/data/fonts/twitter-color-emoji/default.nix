@@ -14,14 +14,14 @@
 }:
 
 let
-  version = "13.0.1";
+  version = "13.0.2";
 
   twemojiSrc = fetchFromGitHub {
     name = "twemoji";
     owner = "twitter";
     repo = "twemoji";
     rev = "v${version}";
-    sha256 = "0acinlv2l3s1jga2i9wh16mvgkxw4ipzgvjx8c80zd104lpdpgd9";
+    sha256 = "069pyq09jfzwp3xla8vmhbyyam32x2iyp0s29xcxlkj22p99bg6d";
   };
 
   pythonEnv =
@@ -56,15 +56,15 @@ stdenv.mkDerivation rec {
 
   postPatch = let
     templateSubstitutions = lib.concatStringsSep "; " [
-      ''s#Noto Color Emoji#Twitter Color Emoji#''
-      ''s#NotoColorEmoji#TwitterColorEmoji#''
+      "s#Noto Color Emoji#Twitter Color Emoji#"
+      "s#NotoColorEmoji#TwitterColorEmoji#"
       ''s#Copyright .* Google Inc\.#Twitter, Inc and other contributors.#''
-      ''s# Version .*# ${version}#''
-      ''s#.*is a trademark.*##''
+      "s# Version .*# ${version}#"
+      "s#.*is a trademark.*##"
       ''s#Google, Inc\.#Twitter, Inc and other contributors#''
-      ''s#http://www.google.com/get/noto/#https://twemoji.twitter.com/#''
-      ''s#.*is licensed under.*#      Creative Commons Attribution 4.0 International#''
-      ''s#http://scripts.sil.org/OFL#http://creativecommons.org/licenses/by/4.0/#''
+      "s#http://www.google.com/get/noto/#https://twemoji.twitter.com/#"
+      "s#.*is licensed under.*#      Creative Commons Attribution 4.0 International#"
+      "s#http://scripts.sil.org/OFL#http://creativecommons.org/licenses/by/4.0/#"
     ];
   in ''
     ${noto-fonts-emoji.postPatch}

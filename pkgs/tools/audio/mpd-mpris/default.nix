@@ -1,4 +1,4 @@
-{ lib, stdenv, buildGoModule, fetchFromGitHub }:
+{ lib, buildGoModule, fetchFromGitHub }:
 
 buildGoModule rec {
   pname = "mpd-mpris";
@@ -29,6 +29,6 @@ buildGoModule rec {
     homepage = "https://github.com/natsukagami/mpd-mpris";
     license = licenses.mit;
     maintainers = with maintainers; [ doronbehar ];
-    platforms = platforms.linux;
+    platforms = platforms.unix;
   };
 }

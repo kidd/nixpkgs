@@ -5,7 +5,7 @@
 
 assert par2Support -> par2cmdline != null;
 
-let version = "0.31"; in
+let version = "0.32"; in
 
 with lib;
 
@@ -17,7 +17,7 @@ stdenv.mkDerivation {
     repo = "bup";
     owner = "bup";
     rev = version;
-    sha256 = "03kmmdlgg0p5z39bhckkf91mmq55wghb93ghqvv9f9gaby1diw4z";
+    sha256 = "sha256-SWnEJ5jwu/Jr2NLsTS8ajWay0WX/gYbOc3J6w00DndI=";
   };
 
   buildInputs = [
@@ -31,9 +31,8 @@ stdenv.mkDerivation {
   postPatch = ''
     patchShebangs .
     substituteInPlace Makefile --replace "-Werror" ""
-    substituteInPlace Makefile --replace "./format-subst.pl" "${perl}/bin/perl ./format-subst.pl"
   '' + optionalString par2Support ''
-    substituteInPlace cmd/fsck-cmd.py --replace "['par2'" "['${par2cmdline}/bin/par2'"
+    substituteInPlace cmd/fsck-cmd.py --replace "'par2'" "'${par2cmdline}/bin/par2'"
   '';
 
   dontAddPrefix = true;

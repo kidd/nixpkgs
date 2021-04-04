@@ -42,7 +42,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ cmake ninja pkg-config ];
 
   # Not sure when and how to pass it.  It seems an upstream bug anyway.
-  CXXFLAGS = stdenv.lib.optionalString stdenv.cc.isClang "-std=c++11";
+  CXXFLAGS = lib.optionalString stdenv.cc.isClang "-std=c++11";
 
   cmakeFlags = [
     (mkFlag true "XPDF_HEADERS")
@@ -52,6 +52,8 @@ stdenv.mkDerivation rec {
     (mkFlag utils "UTILS")
     (mkFlag qt5Support "QT5")
   ];
+
+  dontWrapQtApps = true;
 
   meta = with lib; {
     homepage = "https://poppler.freedesktop.org/";

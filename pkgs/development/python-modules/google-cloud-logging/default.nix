@@ -1,4 +1,4 @@
-{ lib, stdenv
+{ lib
 , buildPythonPackage
 , fetchPypi
 , django
@@ -15,11 +15,11 @@
 
 buildPythonPackage rec {
   pname = "google-cloud-logging";
-  version = "2.0.2";
+  version = "2.3.0";
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "0s09vs4rnq4637j8zw7grv3f4j7njqprm744b1knzldj91rg0vmi";
+    sha256 = "b5675ce159db4e9c1d755003b76190460766f426a7c3c1519014cdd5ce66e890";
   };
 
   propagatedBuildInputs = [ google-api-core google-cloud-core proto-plus ];

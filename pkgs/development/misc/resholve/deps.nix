@@ -1,4 +1,4 @@
-{ stdenv
+{ lib, stdenv
 , python27Packages
 , fetchFromGitHub
 , makeWrapper
@@ -60,13 +60,13 @@ rec {
   # resholve's primary dependency is this developer build of the oil shell.
   oildev = python27Packages.buildPythonPackage rec {
     pname = "oildev-unstable";
-    version = "2020-03-31";
+    version = "2021-02-26";
 
     src = fetchFromGitHub {
       owner = "oilshell";
       repo = "oil";
-      rev = "ea80cdad7ae1152a25bd2a30b87fe3c2ad32394a";
-      sha256 = "0pxn0f8qbdman4gppx93zwml7s5byqfw560n079v68qjgzh2brq2";
+      rev = "11c6bd3ca0e126862c7a1f938c8510779837affa";
+      hash = "sha256-UTQywtx+Dn1/qx5uocqgGn7oFYW4R5DbuiRNF8t/BzY=";
 
       /*
       It's not critical to drop most of these; the primary target is
@@ -106,12 +106,12 @@ rec {
     _NIX_SHELL_LIBCMARK = "${cmark}/lib/libcmark${stdenv.hostPlatform.extensions.sharedLibrary}";
 
     # See earlier note on glibcLocales
-    LOCALE_ARCHIVE = stdenv.lib.optionalString (stdenv.buildPlatform.libc == "glibc") "${glibcLocales}/lib/locale/locale-archive";
+    LOCALE_ARCHIVE = lib.optionalString (stdenv.buildPlatform.libc == "glibc") "${glibcLocales}/lib/locale/locale-archive";
 
     meta = {
       description = "A new unix shell";
       homepage = "https://www.oilshell.org/";
-      license = with stdenv.lib.licenses; [
+      license = with lib.licenses; [
         psfl # Includes a portion of the python interpreter and standard library
         asl20 # Licence for Oil itself
       ];

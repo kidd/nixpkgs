@@ -1,8 +1,10 @@
-{ lib, stdenv, buildDunePackage, fetchFromGitHub, ocamlnet, cpu }:
+{ lib, buildDunePackage, fetchFromGitHub, ocamlnet, cpu }:
 
 buildDunePackage rec {
   pname = "parany";
   version = "8.0.0";
+
+  useDune2 = true;
 
   src = fetchFromGitHub {
     owner = "UnixJunkie";

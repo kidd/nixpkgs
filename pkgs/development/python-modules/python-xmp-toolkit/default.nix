@@ -26,7 +26,7 @@ buildPythonPackage {
 
   buildInputs = [ exempi ];
 
-  checkInputs = stdenv.lib.optionals (pythonOlder "3.3") [ mock ];
+  checkInputs = lib.optionals (pythonOlder "3.3") [ mock ];
 
   propagatedBuildInputs = [ pytz ];
 
@@ -34,6 +34,9 @@ buildPythonPackage {
     substituteInPlace libxmp/exempi.py \
       --replace "ctypes.util.find_library('exempi')" "'${exempi}/lib/libexempi${stdenv.hostPlatform.extensions.sharedLibrary}'"
   '';
+
+  # hangs on darwin + sandbox
+  doCheck = !stdenv.isDarwin;
 
   meta = with lib; {
     homepage = "https://github.com/python-xmp-toolkit/python-xmp-toolkit";

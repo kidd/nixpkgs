@@ -2,13 +2,13 @@
 
 perlPackages.buildPerlPackage rec {
   pname = "pgformatter";
-  version = "4.4";
+  version = "5.0";
 
   src = fetchFromGitHub {
     owner = "darold";
     repo = "pgFormatter";
     rev = "v${version}";
-    sha256 = "1sqjw6q005lws7qhkd26jqyb1xqmpcklzw5hk8paxxi8mzyjn0jp";
+    sha256 = "10ml3va6ip501ibaykbhq8282y1j6r8bc8azc1gqxskk5jvfz1jm";
   };
 
   outputs = [ "out" ];
@@ -24,8 +24,8 @@ perlPackages.buildPerlPackage rec {
       --replace "'INSTALLDIRS'  => \$INSTALLDIRS," "'INSTALLDIRS'  => \$INSTALLDIRS, 'INSTALLVENDORLIB' => 'bin/lib', 'INSTALLVENDORBIN' => 'bin', 'INSTALLVENDORSCRIPT' => 'bin', 'INSTALLVENDORMAN1DIR' => 'share/man/man1', 'INSTALLVENDORMAN3DIR' => 'share/man/man3',"
   '';
 
-  nativeBuildInputs = stdenv.lib.optional stdenv.isDarwin shortenPerlShebang;
-  postInstall = stdenv.lib.optionalString stdenv.isDarwin ''
+  nativeBuildInputs = lib.optional stdenv.isDarwin shortenPerlShebang;
+  postInstall = lib.optionalString stdenv.isDarwin ''
     shortenPerlShebang $out/bin/pg_format
   '';
 

@@ -1,4 +1,4 @@
-{ lib, stdenv, python3Packages, fetchzip }:
+{ lib, python3Packages, fetchzip }:
 
 python3Packages.buildPythonApplication {
   pname = "pdf-parser";
@@ -29,6 +29,6 @@ python3Packages.buildPythonApplication {
     homepage = "https://blog.didierstevens.com/programs/pdf-tools/";
     license = licenses.publicDomain;
     maintainers = [ maintainers.lightdiscord ];
-    platforms = platforms.linux;
+    platforms = platforms.all;
   };
 }

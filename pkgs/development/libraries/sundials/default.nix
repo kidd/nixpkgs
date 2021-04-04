@@ -1,7 +1,6 @@
-{ stdenv
+{ lib, stdenv
 , cmake
 , fetchurl
-, fetchpatch
 , python
 , blas
 , lapack
@@ -13,30 +12,21 @@
 
 stdenv.mkDerivation rec {
   pname = "sundials";
-  version = "5.6.1";
+  version = "5.7.0";
 
   outputs = [ "out" "examples" ];
 
   src = fetchurl {
     url = "https://computation.llnl.gov/projects/${pname}/download/${pname}-${version}.tar.gz";
-    sha256 = "Frd5mex+fyFXqh0Eyh3kojccqBUOBW0klR0MWJZvKoM=";
+    sha256 = "jW3QlP7Mu41uzEE0DsFqZfq6yC7UQVAj9tfBwjkOovM=";
   };
-
-  patches = [
-    # Fixing an upstream regression in treating cmake prefix directories:
-    # https://github.com/LLNL/sundials/pull/58
-    (fetchpatch {
-      url = "https://github.com/LLNL/sundials/commit/dd32ff9baa05618f36e44aadb420bbae4236ea1e.patch";
-      sha256 = "kToAuma+2iHFyL1v/l29F3+nug4AdK5cPG6IcXv2afc=";
-    })
-  ];
 
   nativeBuildInputs = [ cmake ];
 
   buildInputs = [
     python
   ]
-    ++ stdenv.lib.optionals (lapackSupport)
+    ++ lib.optionals (lapackSupport)
     # Check that the same index size is used for both libraries
     (assert (blas.isILP64 == lapack.isILP64); [
       gfortran
@@ -46,16 +36,16 @@ stdenv.mkDerivation rec {
   # KLU support is based on Suitesparse.
   # It is tested upstream according to the section 1.1.4 of
   # [INSTALL_GUIDE.pdf](https://raw.githubusercontent.com/LLNL/sundials/master/INSTALL_GUIDE.pdf)
-  ++ stdenv.lib.optionals (kluSupport) [
+  ++ lib.optionals (kluSupport) [
     suitesparse
   ];
 
   cmakeFlags = [
     "-DEXAMPLES_INSTALL_PATH=${placeholder "examples"}/share/examples"
-  ] ++ stdenv.lib.optionals (lapackSupport) [
+  ] ++ lib.optionals (lapackSupport) [
     "-DENABLE_LAPACK=ON"
     "-DLAPACK_LIBRARIES=${lapack}/lib/liblapack${stdenv.hostPlatform.extensions.sharedLibrary}"
-  ] ++ stdenv.lib.optionals (kluSupport) [
+  ] ++ lib.optionals (kluSupport) [
     "-DENABLE_KLU=ON"
     "-DKLU_INCLUDE_DIR=${suitesparse.dev}/include"
     "-DKLU_LIBRARY_DIR=${suitesparse}/lib"
@@ -73,7 +63,7 @@ stdenv.mkDerivation rec {
   doCheck = true;
   checkTarget = "test";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Suite of nonlinear differential/algebraic equation solvers";
     homepage    = "https://computation.llnl.gov/projects/sundials";
     platforms   = platforms.all;

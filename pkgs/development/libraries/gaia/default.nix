@@ -9,7 +9,7 @@
 , wafHook
 , makeWrapper
 , qt4
-, pythonPackages
+, pythonPackages ? null
 , pythonSupport ? false
 # Default to false since it breaks the build, see https://github.com/MTG/gaia/issues/11
 , stlfacadeSupport ? false
@@ -31,8 +31,7 @@ stdenv.mkDerivation rec {
   };
 
   # Fix installation error when waf tries to put files in /etc/
-  prePatch = ''
-  '' + lib.optionalString cyclopsSupport ''
+  prePatch = "" + lib.optionalString cyclopsSupport ''
     substituteInPlace src/wscript \
       --replace "/etc/cyclops" "$out/etc/cyclops" \
       --replace "/etc/init.d" "$out/etc/init.d"
@@ -72,8 +71,7 @@ stdenv.mkDerivation rec {
     ++ lib.optionals (cyclopsSupport) [ "--with-cyclops" ]
   ;
 
-  postFixup = ''
-  ''
+  postFixup = ""
     + lib.optionalString pythonSupport ''
       wrapPythonPrograms
     ''

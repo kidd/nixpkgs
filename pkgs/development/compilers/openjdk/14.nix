@@ -22,9 +22,9 @@ let
       sha256 = "1s1pc6ihzf0awp4hbaqfxmbica0hnrg8nr7s0yd2hfn7nan8xmf3";
     };
 
-    nativeBuildInputs = [ pkg-config autoconf ];
+    nativeBuildInputs = [ pkg-config autoconf unzip ];
     buildInputs = [
-      cpio file which unzip zip perl zlib cups freetype alsaLib libjpeg giflib
+      cpio file which zip perl zlib cups freetype alsaLib libjpeg giflib
       libpng zlib lcms2 libX11 libICE libXrender libXext libXtst libXt libXtst
       libXi libXinerama libXcursor libXrandr fontconfig openjdk14-bootstrap
     ] ++ lib.optionals (!headless && enableGnome2) [
@@ -141,7 +141,7 @@ let
 
     disallowedReferences = [ openjdk14-bootstrap ];
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       homepage = "https://openjdk.java.net/";
       license = licenses.gpl2;
       description = "The open-source Java Development Kit";

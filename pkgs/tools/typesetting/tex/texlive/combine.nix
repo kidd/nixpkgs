@@ -29,7 +29,7 @@ let
       [ "de-macro" "pythontex" "dviasm" "texliveonfly" ];
     pkgNeedsRuby = pkg: pkg.tlType == "run" && pkg.pname == "match-parens";
     extraInputs =
-      lib.optional (lib.any pkgNeedsPython splitBin.wrong) python
+      lib.optional (lib.any pkgNeedsPython splitBin.wrong) python3
       ++ lib.optional (lib.any pkgNeedsRuby splitBin.wrong) ruby;
   };
 
@@ -51,6 +51,9 @@ in (buildEnv {
   ];
 
   buildInputs = [ makeWrapper ] ++ pkgList.extraInputs;
+
+  # This is set primarily to help find-tarballs.nix to do its job
+  passthru.packages = pkgList.all;
 
   postBuild = ''
     cd "$out"

@@ -1,17 +1,17 @@
-{ lib, stdenv, buildGoModule, fetchFromGitHub, installShellFiles }:
+{ lib, buildGoModule, fetchFromGitHub, installShellFiles }:
 
 buildGoModule rec {
   pname = "chezmoi";
-  version = "1.8.10";
+  version = "2.0.7";
 
   src = fetchFromGitHub {
     owner = "twpayne";
     repo = "chezmoi";
     rev = "v${version}";
-    sha256 = "sha256-S1bnzuOZGQLdVJUH+A29KxF84dj2OeLJ4XajfTDdjUY=";
+    sha256 = "sha256-mJJtkJ57rYEe1BWK3TWAMOar/IUUC9ybiccx81puHsE=";
   };
 
-  vendorSha256 = "sha256-X1h0EcUf8MWt929huNjt0WnhFqhVZu07JGi7c5hdXoY=";
+  vendorSha256 = "sha256-YU+t8GVsLYWONezUIB4NUrVxtYOmf/2b5v4v3VSYtBU=";
 
   doCheck = false;
 

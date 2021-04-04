@@ -12,13 +12,13 @@
 
 stdenv.mkDerivation rec {
   pname = "fcitx5-rime";
-  version = "5.0.2";
+  version = "5.0.4";
 
   src = fetchFromGitHub {
     owner = "fcitx";
     repo = "fcitx5-rime";
     rev = version;
-    sha256 = "cVCTsD1Iw6OtyYFpxff3ix2CubRTnDaBevAYA4I9Ai8=";
+    sha256 = "sha256-WB+bWvJxL2yywictNN8Zy0OYxiCRErQGL2dGH4zQPp8=";
   };
 
   cmakeFlags = [

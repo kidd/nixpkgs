@@ -5,26 +5,29 @@
 , gfortran ? null
 , zlib ? null
 , szip ? null
-, mpi ? null
+, mpiSupport ? false
+, mpi
 , enableShared ? !stdenv.hostPlatform.isStatic
+, javaSupport ? false
+, jdk
 }:
 
 # cpp and mpi options are mutually exclusive
 # (--enable-unsupported could be used to force the build)
-assert !cpp || mpi == null;
+assert !cpp || !mpiSupport;
 
 let inherit (lib) optional optionals; in
 
 stdenv.mkDerivation rec {
-  version = "1.10.6";
+  version = "1.10.7";
   pname = "hdf5";
   src = fetchurl {
     url = "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/${pname}-${version}/src/${pname}-${version}.tar.bz2";
-    sha256 = "1gf38x51128hn00744358w27xgzjk0ff4wra4yxh2lk804ck1mh9";
+    sha256 = "0pm5xxry55i0h7wmvc7svzdaa90rnk7h78rrjmnlkz2ygsn8y082";
   };
 
   passthru = {
-    mpiSupport = (mpi != null);
+    inherit mpiSupport;
     inherit mpi;
   };
 
@@ -34,18 +37,20 @@ stdenv.mkDerivation rec {
 
   buildInputs = []
     ++ optional (gfortran != null) gfortran
-    ++ optional (szip != null) szip;
+    ++ optional (szip != null) szip
+    ++ optional javaSupport jdk;
 
   propagatedBuildInputs = []
     ++ optional (zlib != null) zlib
-    ++ optional (mpi != null) mpi;
+    ++ optional mpiSupport mpi;
 
   configureFlags = []
     ++ optional cpp "--enable-cxx"
     ++ optional (gfortran != null) "--enable-fortran"
     ++ optional (szip != null) "--with-szlib=${szip}"
-    ++ optionals (mpi != null) ["--enable-parallel" "CC=${mpi}/bin/mpicc"]
-    ++ optional enableShared "--enable-shared";
+    ++ optionals mpiSupport ["--enable-parallel" "CC=${mpi}/bin/mpicc"]
+    ++ optional enableShared "--enable-shared"
+    ++ optional javaSupport "--enable-java";
 
   patches = [
     ./bin-mv.patch

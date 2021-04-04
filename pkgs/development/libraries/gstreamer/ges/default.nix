@@ -1,4 +1,4 @@
-{ stdenv
+{ lib, stdenv
 , fetchurl
 , meson
 , ninja
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
   ];
 
   src = fetchurl {
-    url = "${meta.homepage}/src/${pname}/${pname}-${version}.tar.xz";
+    url = "https://gstreamer.freedesktop.org/src/${pname}/${pname}-${version}.tar.xz";
     sha256 = "0pv2k8zlpn3vv2sdlspi3m63ixcwzi90pjly2ypbkg59ab97rb15";
   };
 
@@ -66,7 +66,7 @@ stdenv.mkDerivation rec {
       scripts/extract-release-date-from-doap-file.py
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Library for creation of audio/video non-linear editors";
     homepage = "https://gstreamer.freedesktop.org";
     license = licenses.lgpl2Plus;

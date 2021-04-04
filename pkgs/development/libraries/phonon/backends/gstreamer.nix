@@ -9,7 +9,7 @@ stdenv.mkDerivation rec {
   pname = "phonon-backend-gstreamer";
   version = "4.10.0";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = "https://phonon.kde.org/";
     description = "GStreamer backend for Phonon";
     platforms = platforms.linux;
@@ -25,6 +25,8 @@ stdenv.mkDerivation rec {
   # Hardcode paths to useful plugins so the backend doesn't depend
   # on system paths being set.
   patches = [ ./gst-plugin-paths.patch ];
+
+  dontWrapQtApps = true;
 
   NIX_CFLAGS_COMPILE =
     let gstPluginPaths =

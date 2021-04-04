@@ -27,13 +27,13 @@
 
 stdenv.mkDerivation rec {
   pname = "openscenegraph";
-  version = "3.6.4";
+  version = "3.6.5";
 
   src = fetchFromGitHub {
     owner = "openscenegraph";
     repo = "OpenSceneGraph";
     rev = "OpenSceneGraph-${version}";
-    sha256 = "0x8hdbzw0b71j91fzp9cwmy9a7ava8v8wwyj8nxijq942vdx1785";
+    sha256 = "00i14h82qg3xzcyd8p02wrarnmby3aiwmz0z43l50byc9f8i05n1";
   };
 
   nativeBuildInputs = [ pkg-config cmake doxygen ];
@@ -66,7 +66,7 @@ stdenv.mkDerivation rec {
 
   cmakeFlags = lib.optional (!withApps) "-DBUILD_OSG_APPLICATIONS=OFF" ++ lib.optional withExamples "-DBUILD_OSG_EXAMPLES=ON";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "A 3D graphics toolkit";
     homepage = "http://www.openscenegraph.org/";
     maintainers = with maintainers; [ aanderse raskin ];

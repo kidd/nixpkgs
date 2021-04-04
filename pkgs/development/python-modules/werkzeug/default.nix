@@ -17,7 +17,7 @@ buildPythonPackage rec {
   propagatedBuildInputs = [ itsdangerous ];
   checkInputs = [ pytestCheckHook requests hypothesis pytest-timeout ];
 
-  disabledTests = stdenv.lib.optionals stdenv.isDarwin [
+  disabledTests = lib.optionals stdenv.isDarwin [
     "test_get_machine_id"
   ];
 
@@ -25,5 +25,6 @@ buildPythonPackage rec {
     homepage = "https://palletsprojects.com/p/werkzeug/";
     description = "A WSGI utility library for Python";
     license = licenses.bsd3;
+    maintainers = [ ];
   };
 }

@@ -1,4 +1,4 @@
-{ stdenv
+{ lib
 , fetchFromGitHub
 , SDL
 , ffmpeg
@@ -23,16 +23,16 @@
 , mkDerivation
 , which
 }:
-let inherit (stdenv.lib) getDev; in
+let inherit (lib) getDev; in
 mkDerivation rec {
   pname = "mlt";
-  version = "6.22.1";
+  version = "6.24.0";
 
   src = fetchFromGitHub {
     owner = "mltframework";
     repo = "mlt";
     rev = "v${version}";
-    sha256 = "0jxv848ykw0csbnayrd710ylw46m0picfv7rpzsxz1vh4jzs395k";
+    sha256 = "1my43ica2qax2622307dv4gn3w8hkchy643i9pq8r9yh2hd4pvs9";
   };
 
   buildInputs = [
@@ -102,7 +102,7 @@ mkDerivation rec {
     rev-prefix = "v";
   };
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Open source multimedia framework, designed for television broadcasting";
     homepage = "https://www.mltframework.org/";
     license = licenses.gpl3;

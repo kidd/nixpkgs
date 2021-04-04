@@ -18,8 +18,8 @@ stdenv.mkDerivation rec {
   '';
 
   makeFlags = [
-    "prefix=${placeholder ''out''}"
-  ];
+    "prefix=${placeholder "out"}"
+  ] ++ lib.optional stdenv.hostPlatform.isStatic "ENABLE_SHARED=0";
 
   hardeningDisable = lib.optional (stdenv.isi686) "stackprotector";
 

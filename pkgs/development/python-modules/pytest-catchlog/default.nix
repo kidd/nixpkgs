@@ -1,4 +1,4 @@
-{ lib, stdenv, buildPythonPackage, fetchPypi, pytest, unzip }:
+{ lib, buildPythonPackage, fetchPypi, pytest, unzip }:
 
 buildPythonPackage rec {
   pname = "pytest-catchlog";
@@ -10,7 +10,8 @@ buildPythonPackage rec {
     extension = "zip";
   };
 
-  buildInputs = [ pytest unzip ];
+  nativeBuildInputs = [ unzip ];
+  buildInputs = [ pytest ];
   checkPhase = "make test";
 
   # Requires pytest < 3.1

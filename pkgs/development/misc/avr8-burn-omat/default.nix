@@ -8,7 +8,7 @@ stdenv.mkDerivation {
     sha256 = "02k0fd0cd3y1yqip36wr3bkxbywp8913w4y7jdg6qwqxjnii58ln";
   };
 
-  buildInputs = [ unzip ];
+  nativeBuildInputs = [ unzip ];
 
   phases = "unpackPhase installPhase";
 
@@ -27,7 +27,7 @@ stdenv.mkDerivation {
   meta = with lib; {
     description = "GUI tool for avrdude";
     homepage = "http://avr8-burn-o-mat.aaabbb.de/avr8_burn_o_mat_avrdude_gui_en.html";
-    license = stdenv.lib.licenses.gpl3;
+    license = lib.licenses.gpl3;
     platforms = platforms.all;
   };
 }

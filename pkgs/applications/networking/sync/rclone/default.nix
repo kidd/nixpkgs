@@ -2,16 +2,16 @@
 
 buildGoModule rec {
   pname = "rclone";
-  version = "1.53.3";
+  version = "1.55.0";
 
   src = fetchFromGitHub {
     owner = pname;
     repo = pname;
     rev = "v${version}";
-    sha256 = "10nimrq8nmpmfk2d4fx0yp916wk5q027m283izpshrbwvx7l6xx0";
+    sha256 = "01pvcns3n735s848wc11q40pkkv646gn3cxkma866k44a9c2wirl";
   };
 
-  vendorSha256 = "1l4iz31k1pylvf0zrp4nhxna70s1ma4981x6q1s3dhszjxil5c88";
+  vendorSha256 = "05f9nx5sa35q2szfkmnkhvqli8jlqja8ghiwyxk7cvgjl7fgd6zk";
 
   subPackages = [ "." ];
 
@@ -39,7 +39,8 @@ buildGoModule rec {
   meta = with lib; {
     description = "Command line program to sync files and directories to and from major cloud storage";
     homepage = "https://rclone.org";
+    changelog = "https://github.com/rclone/rclone/blob/v${version}/docs/content/changelog.md";
     license = licenses.mit;
-    maintainers = with maintainers; [ danielfullmer marsam ];
+    maintainers = with maintainers; [ danielfullmer marsam SuperSandro2000 ];
   };
 }

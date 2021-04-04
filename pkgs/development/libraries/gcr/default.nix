@@ -1,4 +1,4 @@
-{ stdenv
+{ lib, stdenv
 , fetchurl
 , pkg-config
 , meson
@@ -22,11 +22,11 @@
 
 stdenv.mkDerivation rec {
   pname = "gcr";
-  version = "3.38.0";
+  version = "3.38.1";
 
   src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "1q97pba4bzjndm1vlvicyv8mrl0n589qsw71dp8jrz2payvcfk56";
+    url = "mirror://gnome/sources/${pname}/${lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+    sha256 = "F/yvnEqTpl+xxyuCZDuxAsEzRAhGh9WIbqZjE4aNnsk=";
   };
 
   postPatch = ''
@@ -87,7 +87,7 @@ stdenv.mkDerivation rec {
     };
   };
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     platforms = platforms.linux;
     maintainers = teams.gnome.members;
     description = "GNOME crypto services (daemon and tools)";

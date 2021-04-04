@@ -23,18 +23,18 @@
 
 stdenv.mkDerivation rec {
   pname = "OpenTabletDriver";
-  version = "0.4.2";
+  version = "0.5.1";
 
   src = fetchFromGitHub {
     owner = "InfinityGhost";
     repo = "OpenTabletDriver";
     rev = "v${version}";
-    sha256 = "048y7gjlk2yw4vh62px1d9w0va6ap1a0cndcpbirlyj9q6b8jxax";
+    sha256 = "1if2mkj193yzf5si9pwaynrm6wkhqy7ihk4k1lklzcryk5675w36";
   };
 
   debPkg = fetchurl {
     url = "https://github.com/InfinityGhost/OpenTabletDriver/releases/download/v${version}/OpenTabletDriver.deb";
-    sha256 = "13gg0dhvjy88h9lhcrp30fjiwgb9dzjsgk1k760pi1ki71a5vz2r";
+    sha256 = "16a1rr0yxra1dhwysbbfgsxpigh2jhjlsl7r28dgp8qcxncck7wg";
   };
 
   nativeBuildInputs = [
@@ -134,8 +134,8 @@ stdenv.mkDerivation rec {
     install -Dm644 $src/OpenTabletDriver.UX/Assets/otd.png -t $out/share/pixmaps
 
     # TODO: Ideally this should be build from OpenTabletDriver/OpenTabletDriver-udev instead
-    dpkg-deb --fsys-tarfile ${debPkg} | tar xf - ./usr/lib/udev/rules.d/30-opentabletdriver.rules
-    install -Dm644 ./usr/lib/udev/rules.d/30-opentabletdriver.rules -t $out/lib/udev/rules.d
+    dpkg-deb --fsys-tarfile ${debPkg} | tar xf - ./usr/lib/udev/rules.d/99-opentabletdriver.rules
+    install -Dm644 ./usr/lib/udev/rules.d/99-opentabletdriver.rules -t $out/lib/udev/rules.d
 
     runHook postInstall
   '';
@@ -155,8 +155,11 @@ stdenv.mkDerivation rec {
   dontWrapGApps = true;
   dontStrip = true;
 
-  passthru.tests = {
-    otd-runs = nixosTests.opentabletdriver;
+  passthru = {
+    updateScript = ./update.sh;
+    tests = {
+      otd-runs = nixosTests.opentabletdriver;
+    };
   };
 
   meta = with lib; {

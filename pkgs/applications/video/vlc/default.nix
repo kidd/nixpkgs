@@ -1,6 +1,6 @@
 { lib, stdenv, fetchurl, autoreconfHook
 , libarchive, perl, xorg, libdvdnav, libbluray
-, zlib, a52dec, libmad, faad2, ffmpeg_3, alsaLib
+, zlib, a52dec, libmad, faad2, ffmpeg, alsaLib
 , pkg-config, dbus, fribidi, freefont_ttf, libebml, libmatroska
 , libvorbis, libtheora, speex, lua5, libgcrypt, libgpgerror, libupnp
 , libcaca, libpulseaudio, flac, schroedinger, libxml2, librsvg
@@ -24,27 +24,21 @@ with lib;
 
 stdenv.mkDerivation rec {
   pname = "${optionalString onlyLibVLC "lib"}vlc";
-  version = "3.0.11.1";
+  version = "3.0.12";
 
   src = fetchurl {
     url = "http://get.videolan.org/vlc/${version}/vlc-${version}.tar.xz";
-    sha256 = "1f46h0hv7fk35zg4iczlp7ib7h2jmh8m4r5klw3g2558ib9134qq";
+    sha256 = "0ygqihw2c5vvzv8950dlf7rdwz1cpz1668jgyja604ljibrmix7g";
   };
-
-  patches = [
-    # Couldn't find an upstream version of this patch
-    # https://build.opensuse.org/package/view_file/openSUSE:Factory/vlc/fix-missing-includes-with-qt-5.15.patch?expand=1
-    ./fix-missing-includes-with-qt-5.15.patch
-  ];
 
   # VLC uses a *ton* of libraries for various pieces of functionality, many of
   # which are not included here for no other reason that nobody has mentioned
   # needing them
   buildInputs = [
-    zlib a52dec libmad faad2 ffmpeg_3 alsaLib libdvdnav libdvdnav.libdvdread
+    zlib a52dec libmad faad2 ffmpeg alsaLib libdvdnav libdvdnav.libdvdread
     libbluray dbus fribidi libvorbis libtheora speex lua5 libgcrypt libgpgerror
     libupnp libcaca libpulseaudio flac schroedinger libxml2 librsvg mpeg2dec
-    systemd gnutls avahi libcddb SDL SDL_image libmtp unzip taglib libarchive
+    systemd gnutls avahi libcddb SDL SDL_image libmtp taglib libarchive
     libkate libtiger libv4l samba libssh2 liboggz libass libdvbpsi libva
     xorg.xlibsWrapper xorg.libXv xorg.libXvMC xorg.libXpm xorg.xcbutilkeysyms
     libdc1394 libraw1394 libopus libebml libmatroska libvdpau libsamplerate
@@ -55,7 +49,7 @@ stdenv.mkDerivation rec {
     ++ optional jackSupport libjack2
     ++ optionals chromecastSupport [ protobuf libmicrodns ];
 
-  nativeBuildInputs = [ autoreconfHook perl pkg-config removeReferencesTo ]
+  nativeBuildInputs = [ autoreconfHook perl pkg-config removeReferencesTo unzip ]
     ++ optionals withQt5 [ wrapQtAppsHook ];
 
   enableParallelBuilding = true;
@@ -67,9 +61,6 @@ stdenv.mkDerivation rec {
   BUILDCC = "${stdenv.cc}/bin/gcc";
 
   postPatch = ''
-    substituteInPlace configure \
-      --replace /bin/echo echo
-
     substituteInPlace modules/text_renderer/freetype/platform_fonts.h --replace \
       /usr/share/fonts/truetype/freefont ${freefont_ttf}/share/fonts/truetype
   '';

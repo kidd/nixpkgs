@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchFromGitHub, cmake, pkg-config, mkDerivation
+{ lib, fetchFromGitHub, cmake, pkg-config, mkDerivation
 , qtbase, qtx11extras, qtsvg, makeWrapper
 , vulkan-loader, libglvnd, xorg, python3, python3Packages
 , bison, pcre, automake, autoconf, addOpenGLRunpath
@@ -13,14 +13,14 @@ let
   pythonPackages = python3Packages;
 in
 mkDerivation rec {
-  version = "1.11";
+  version = "1.12";
   pname = "renderdoc";
 
   src = fetchFromGitHub {
     owner = "baldurk";
     repo = "renderdoc";
     rev = "v${version}";
-    sha256 = "01r4fq03fpyhwvn47wx3dw29vcadcd0qml00h36q38cq3pi9x42j";
+    sha256 = "4k0WsTsz4WwPZC8Dj85l2ntJOZkLgmBBOJcX9Bb4U7I=";
   };
 
   buildInputs = [

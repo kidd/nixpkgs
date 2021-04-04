@@ -1,4 +1,4 @@
-{ lib, stdenv, buildPythonPackage, fetchPypi, dnspython, chardet, lmtpd
+{ lib, buildPythonPackage, fetchPypi, dnspython, chardet, lmtpd
 , python-daemon, six, jinja2, mock, click }:
 
 buildPythonPackage rec {
@@ -28,7 +28,7 @@ buildPythonPackage rec {
   meta = with lib; {
     homepage = "https://salmon-mail.readthedocs.org/";
     description = "Pythonic mail application server";
-    license = licenses.gpl3;
+    license = licenses.gpl3Only;
     maintainers = with maintainers; [ jluttine ];
   };
 }

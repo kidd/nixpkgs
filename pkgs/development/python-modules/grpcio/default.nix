@@ -1,6 +1,5 @@
 { lib, stdenv
 , buildPythonPackage
-, darwin
 , grpc
 , six
 , protobuf
@@ -20,14 +19,13 @@ buildPythonPackage rec {
 
   outputs = [ "out" "dev" ];
 
-  nativeBuildInputs = [ cython pkg-config ]
-    ++ stdenv.lib.optional stdenv.isDarwin darwin.cctools;
+  nativeBuildInputs = [ cython pkg-config ];
 
   buildInputs = [ c-ares openssl zlib ];
   propagatedBuildInputs = [ six protobuf ]
-    ++ stdenv.lib.optionals (isPy27) [ enum34 futures ];
+    ++ lib.optionals (isPy27) [ enum34 futures ];
 
-  preBuild = stdenv.lib.optionalString stdenv.isDarwin "unset AR";
+  preBuild = lib.optionalString stdenv.isDarwin "unset AR";
 
   GRPC_BUILD_WITH_BORING_SSL_ASM = "";
   GRPC_PYTHON_BUILD_SYSTEM_OPENSSL = 1;

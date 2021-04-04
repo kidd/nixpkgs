@@ -1,15 +1,15 @@
 { abiCompat ? null,
-  stdenv, makeWrapper, fetchurl, fetchpatch, fetchFromGitLab, buildPackages,
+  lib, stdenv, makeWrapper, fetchurl, fetchpatch, fetchFromGitLab, buildPackages,
   automake, autoconf, gettext, libiconv, libtool, intltool,
   freetype, tradcpp, fontconfig, meson, ninja, ed, fontforge,
   libGL, spice-protocol, zlib, libGLU, dbus, libunwind, libdrm,
   mesa, udev, bootstrap_cmds, bison, flex, clangStdenv, autoreconfHook,
-  mcpp, epoxy, openssl, pkg-config, llvm_6, libxslt,
+  mcpp, epoxy, openssl, pkg-config, llvm, libxslt,
   ApplicationServices, Carbon, Cocoa, Xplugin
 }:
 
 let
-  inherit (stdenv) lib isDarwin;
+  inherit (stdenv) isDarwin;
   inherit (lib) overrideDerivation;
 
   malloc0ReturnsNullCrossFlag = lib.optional
@@ -364,42 +364,42 @@ self: super:
     outputs = [ "out" "dev" ]; # to get rid of xorgserver.dev; man is tiny
     preBuild = "sed -e '/motion_history_proc/d; /history_size/d;' -i src/*.c";
     installFlags = [
-      "sdkdir=${placeholder ''out''}/include/xorg"
+      "sdkdir=${placeholder "out"}/include/xorg"
     ];
   });
 
   xf86inputmouse = super.xf86inputmouse.overrideAttrs (attrs: {
     installFlags = [
-      "sdkdir=${placeholder ''out''}/include/xorg"
+      "sdkdir=${placeholder "out"}/include/xorg"
     ];
   });
 
   xf86inputjoystick = super.xf86inputjoystick.overrideAttrs (attrs: {
     installFlags = [
-      "sdkdir=${placeholder ''out''}/include/xorg"
+      "sdkdir=${placeholder "out"}/include/xorg"
     ];
   });
 
   xf86inputlibinput = super.xf86inputlibinput.overrideAttrs (attrs: {
     outputs = [ "out" "dev" ];
     installFlags = [
-      "sdkdir=${placeholder ''dev''}/include/xorg"
+      "sdkdir=${placeholder "dev"}/include/xorg"
     ];
   });
 
   xf86inputsynaptics = super.xf86inputsynaptics.overrideAttrs (attrs: {
     outputs = [ "out" "dev" ]; # *.pc pulls xorgserver.dev
     installFlags = [
-      "sdkdir=${placeholder ''out''}/include/xorg"
-      "configdir=${placeholder ''out''}/share/X11/xorg.conf.d"
+      "sdkdir=${placeholder "out"}/include/xorg"
+      "configdir=${placeholder "out"}/share/X11/xorg.conf.d"
     ];
   });
 
   xf86inputvmmouse = super.xf86inputvmmouse.overrideAttrs (attrs: {
     configureFlags = [
-      "--sysconfdir=${placeholder ''out''}/etc"
-      "--with-xorg-conf-dir=${placeholder ''out''}/share/X11/xorg.conf.d"
-      "--with-udev-rules-dir=${placeholder ''out''}/lib/udev/rules.d"
+      "--sysconfdir=${placeholder "out"}/etc"
+      "--with-xorg-conf-dir=${placeholder "out"}/share/X11/xorg.conf.d"
+      "--with-udev-rules-dir=${placeholder "out"}/lib/udev/rules.d"
     ];
 
     meta = attrs.meta // {
@@ -433,7 +433,7 @@ self: super:
   });
 
   xf86videovmware = super.xf86videovmware.overrideAttrs (attrs: {
-    buildInputs =  attrs.buildInputs ++ [ mesa llvm_6 ]; # for libxatracker
+    buildInputs =  attrs.buildInputs ++ [ mesa llvm ]; # for libxatracker
     meta = attrs.meta // {
       platforms = ["i686-linux" "x86_64-linux"];
     };
@@ -798,6 +798,10 @@ self: super:
     meta = attrs.meta // {
       platforms = ["i686-linux" "x86_64-linux"];
     };
+  });
+
+  xf86videoopenchrome = super.xf86videoopenchrome.overrideAttrs (attrs: {
+    buildInputs = attrs.buildInputs ++ [ self.libXv ];
   });
 
   xf86videoxgi = super.xf86videoxgi.overrideAttrs (attrs: {

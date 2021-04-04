@@ -8,13 +8,13 @@
 
 stdenv.mkDerivation rec {
   pname = "cagebreak";
-  version = "1.4.4";
+  version = "1.6.0";
 
   src = fetchFromGitHub {
     owner = "project-repo";
     repo = "cagebreak";
     rev = version;
-    hash = "sha256-YmUn5H0xNC/4MBGydrEk7dy5v+s2ja4VoA1neWrQ3VY=";
+    hash = "sha256-F7fqDVbJS6pVgmj6C1/l9PAaz5yzcYpaq6oc6a6v/Qk=";
   };
 
   nativeBuildInputs = [ meson ninja pkg-config wayland scdoc makeWrapper ];
@@ -29,6 +29,7 @@ stdenv.mkDerivation rec {
   mesonFlags = [
     "-Dxwayland=${lib.boolToString withXwayland}"
     "-Dversion_override=${version}"
+    "-Dman-pages=true"
   ];
 
   postInstall = ''

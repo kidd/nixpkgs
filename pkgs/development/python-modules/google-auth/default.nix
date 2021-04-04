@@ -1,4 +1,4 @@
-{ lib, stdenv
+{ lib
 , buildPythonPackage
 , fetchpatch
 , fetchPypi
@@ -12,6 +12,8 @@
 , pytest-localserver
 , responses
 , rsa
+, six
+, pyopenssl
 }:
 
 buildPythonPackage rec {
@@ -23,7 +25,13 @@ buildPythonPackage rec {
     sha256 = "0bmdqkyv8k8n6s8dss4zpbcq1cdxwicpb42kwybd02ia85mh43hb";
   };
 
-  propagatedBuildInputs = [ pyasn1-modules cachetools rsa ];
+  propagatedBuildInputs = [
+    cachetools
+    pyasn1-modules
+    rsa
+    six
+    pyopenssl
+  ];
 
   checkInputs = [
     flask

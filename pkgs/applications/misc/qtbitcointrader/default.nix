@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchzip, qt5, mkDerivation }:
+{ lib, fetchzip, qt5, mkDerivation }:
 
 let
   version = "1.40.43";
@@ -31,6 +31,5 @@ mkDerivation {
     homepage = "https://centrabit.com/";
     license = licenses.gpl3;
     platforms = qt5.qtbase.meta.platforms;
-    maintainers = [ maintainers.ehmry ];
   };
 }

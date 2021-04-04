@@ -4,6 +4,7 @@
 , cairo
 , desktop-file-utils
 , evolution-data-server
+, evolution
 , gcr
 , gettext
 , glib
@@ -24,11 +25,11 @@
 
 stdenv.mkDerivation rec {
   pname = "almanah";
-  version = "0.12.2";
+  version = "0.12.3";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "IWYOnOu0C9uQ9k1dgWkJ6Kv+o/jY+6Llfsi4PusHE24=";
+    sha256 = "lMpDQOxlGljP66APR49aPbTZnfrGakbQ2ZcFvmiPMFo=";
   };
 
   nativeBuildInputs = [
@@ -48,7 +49,7 @@ stdenv.mkDerivation rec {
     evolution-data-server
     gcr
     glib
-    gnome3.evolution
+    evolution
     gpgme
     gtk3
     gtksourceview3

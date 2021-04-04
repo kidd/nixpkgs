@@ -1,7 +1,5 @@
 { lib
 , localSystem, crossSystem, config, overlays, crossOverlays ? []
-# The version of darwin.apple_sdk used for sources provided by apple.
-, appleSdkVersion ? "10.12"
 # Minimum required macOS version, used both for compatibility as well as reproducability.
 , macosVersionMin ? "10.12"
 # Allow passing in bootstrap files directly so we can test the stdenv bootstrap process when changing the bootstrap tools
@@ -22,7 +20,7 @@
 assert crossSystem == localSystem;
 
 let
-  inherit (localSystem) system platform;
+  inherit (localSystem) system;
 
   bootstrapClangVersion = "7.1.0";
 
@@ -82,7 +80,7 @@ in rec {
 
       mkCC = overrides: import ../../build-support/cc-wrapper (
         let args = {
-          inherit shell;
+          inherit lib shell;
           inherit (last) stdenvNoCC;
 
           nativeTools  = false;
@@ -150,7 +148,7 @@ in rec {
         __extraImpureHostDeps = commonImpureHostDeps;
 
         extraAttrs = {
-          inherit macosVersionMin appleSdkVersion platform;
+          inherit macosVersionMin;
         };
         overrides  = self: super: (overrides self super) // {
           inherit ccNoLibcxx;
@@ -219,6 +217,7 @@ in rec {
 
         binutils = lib.makeOverridable (import ../../build-support/bintools-wrapper) {
           shell = "${bootstrapTools}/bin/bash";
+          inherit lib;
           inherit (self) stdenvNoCC;
 
           nativeTools  = false;
@@ -323,7 +322,7 @@ in rec {
         libxml2 gettext sharutils gmp libarchive ncurses pkg-config libedit groff
         openssh sqlite sed serf openldap db cyrus-sasl expat apr-util subversion xz
         findfreetype libssh curl cmake autoconf automake libtool ed cpio coreutils
-        libssh2 nghttp2 libkrb5 ninja;
+        libssh2 nghttp2 libkrb5 ninja brotli;
 
       llvmPackages_7 = super.llvmPackages_7 // (let
         tools = super.llvmPackages_7.tools.extend (_: _: {
@@ -360,7 +359,7 @@ in rec {
       [ bootstrapTools ] ++
       (with pkgs; [
         xz.bin xz.out libcxx libcxxabi llvmPackages_7.compiler-rt
-        llvmPackages_7.clang-unwrapped zlib libxml2.out curl.out openssl.out
+        llvmPackages_7.clang-unwrapped zlib libxml2.out curl.out brotli.lib openssl.out
         libssh2.out nghttp2.lib libkrb5 coreutils gnugrep pcre.out gmp libiconv
       ]) ++
       (with pkgs.darwin; [ dyld Libsystem CF ICU locale ]);
@@ -412,7 +411,7 @@ in rec {
       [ bootstrapTools ] ++
       (with pkgs; [
         xz.bin xz.out bash libcxx libcxxabi llvmPackages_7.compiler-rt
-        llvmPackages_7.clang-unwrapped zlib libxml2.out curl.out openssl.out
+        llvmPackages_7.clang-unwrapped zlib libxml2.out curl.out brotli.lib openssl.out
         libssh2.out nghttp2.lib libkrb5 coreutils gnugrep pcre.out gmp libiconv
       ]) ++
       (with pkgs.darwin; [ dyld ICU Libsystem locale ]);
@@ -524,7 +523,7 @@ in rec {
     extraAttrs = {
       libc = pkgs.darwin.Libsystem;
       shellPackage = pkgs.bash;
-      inherit macosVersionMin appleSdkVersion platform bootstrapTools;
+      inherit macosVersionMin bootstrapTools;
     };
 
     allowedRequisites = (with pkgs; [
@@ -534,7 +533,7 @@ in rec {
       gzip ncurses.out ncurses.dev ncurses.man gnused bash gawk
       gnugrep llvmPackages.clang-unwrapped llvmPackages.clang-unwrapped.lib patch pcre.out gettext
       binutils.bintools darwin.binutils darwin.binutils.bintools
-      curl.out openssl.out libssh2.out nghttp2.lib libkrb5
+      curl.out brotli.lib openssl.out libssh2.out nghttp2.lib libkrb5
       cc.expand-response-params libxml2.out
     ]) ++ (with pkgs.darwin; [
       dyld Libsystem CF cctools ICU libiconv locale libtapi

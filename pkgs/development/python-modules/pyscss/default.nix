@@ -1,4 +1,4 @@
-{ lib, stdenv
+{ lib
 , buildPythonPackage
 , fetchFromGitHub
 , pytest
@@ -23,9 +23,12 @@ buildPythonPackage rec {
   checkInputs = [ pytest ];
 
   propagatedBuildInputs = [ six ]
-    ++ (stdenv.lib.optionals (pythonOlder "3.4") [ enum34 pathlib ])
-    ++ (stdenv.lib.optionals (pythonOlder "2.7") [ ordereddict ]);
+    ++ (lib.optionals (pythonOlder "3.4") [ enum34 pathlib ])
+    ++ (lib.optionals (pythonOlder "2.7") [ ordereddict ]);
 
+  # Test suite is broken.
+  # See https://github.com/Kronuz/pyScss/issues/415
+  doCheck = false;
   checkPhase = ''
     py.test
   '';

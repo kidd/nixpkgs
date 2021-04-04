@@ -2,16 +2,16 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "mdbook";
-  version = "0.4.5";
+  version = "0.4.7";
 
   src = fetchFromGitHub {
     owner = "rust-lang-nursery";
     repo = "mdBook";
     rev = "v${version}";
-    sha256 = "11v2x0q8pn7hbmznqy872ksr7szyiki9cfhapymjhkf5nwfvcdbb";
+    sha256 = "sha256-51S4I1YIbdgXkhuT7KnhJe71nGCQmr9JmuGtp7Bcxqo=";
   };
 
-  cargoSha256 = "1psgqj04hzv7p18h4phsahxg4rj9yz38b8mh111k6l8m4r83kd75";
+  cargoSha256 = "sha256-2kBJcImytsSd7Q0kj1bsP/NXxyy2Pr8gHb8iNf6h3/4=";
 
   buildInputs = lib.optionals stdenv.isDarwin [ CoreServices ];
 

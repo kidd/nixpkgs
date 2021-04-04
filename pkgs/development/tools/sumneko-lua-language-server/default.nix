@@ -1,14 +1,14 @@
-{ stdenv, fetchFromGitHub, ninja, makeWrapper }:
+{ lib, stdenv, fetchFromGitHub, ninja, makeWrapper }:
 
 stdenv.mkDerivation rec {
   pname = "sumneko-lua-language-server";
-  version = "1.11.2";
+  version = "1.16.0";
 
   src = fetchFromGitHub {
     owner = "sumneko";
     repo = "lua-language-server";
     rev = version;
-    sha256 = "1cnzwfqmzlzi6797l37arhhx2l6wsvs3jjgxdxwdbgq3rfz1ncr8";
+    sha256 = "1fqhvmz7a4qgz3zq6qgpcjhhhm2j4wpx0385n3zcphd9h9s3a9xa";
     fetchSubmodules = true;
   };
 
@@ -42,7 +42,7 @@ stdenv.mkDerivation rec {
       --metapath='~/.cache/sumneko_lua/meta'"
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Lua Language Server coded by Lua ";
     homepage = "https://github.com/sumneko/lua-language-server";
     license = licenses.mit;

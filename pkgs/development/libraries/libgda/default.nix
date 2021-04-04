@@ -1,7 +1,27 @@
-{ stdenv, fetchurl, pkg-config, intltool, itstool, libxml2, gtk3, openssl, gnome3, gobject-introspection, vala, libgee
-, overrideCC, gcc6, fetchpatch, autoreconfHook, gtk-doc, autoconf-archive, yelp-tools
-, mysqlSupport ? false, libmysqlclient ? null
-, postgresSupport ? false, postgresql ? null
+{ lib
+, stdenv
+, fetchurl
+, pkg-config
+, intltool
+, itstool
+, libxml2
+, gtk3
+, openssl
+, gnome3
+, gobject-introspection
+, vala
+, libgee
+, overrideCC
+, gcc6
+, fetchpatch
+, autoreconfHook
+, gtk-doc
+, autoconf-archive
+, yelp-tools
+, mysqlSupport ? false
+, libmysqlclient ? null
+, postgresSupport ? false
+, postgresql ? null
 }:
 
 assert mysqlSupport -> libmysqlclient != null;
@@ -12,7 +32,7 @@ assert postgresSupport -> postgresql != null;
   version = "5.2.10";
 
   src = fetchurl {
-    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+    url = "mirror://gnome/sources/${pname}/${lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
     sha256 = "1j1l4dwjgw6w4d1v4bl5a4kwyj7bcih8mj700ywm7xakh1xxyv3g";
   };
 
@@ -24,7 +44,30 @@ assert postgresSupport -> postgresql != null;
     })
   ];
 
-  configureFlags = with stdenv.lib; [
+  nativeBuildInputs = [
+    pkg-config
+    intltool
+    itstool
+    libxml2
+    gobject-introspection
+    vala
+    autoreconfHook
+    gtk-doc
+    autoconf-archive
+    yelp-tools
+  ];
+
+  buildInputs = [
+    gtk3
+    openssl
+    libgee
+  ] ++ lib.optionals mysqlSupport [
+    libmysqlclient
+  ] ++ lib.optionals postgresSupport [
+    postgresql
+  ];
+
+  configureFlags = [
     "--with-mysql=${if mysqlSupport then "yes" else "no"}"
     "--with-postgres=${if postgresSupport then "yes" else "no"}"
 
@@ -40,22 +83,22 @@ assert postgresSupport -> postgresql != null;
 
   hardeningDisable = [ "format" ];
 
-  nativeBuildInputs = [ pkg-config intltool itstool libxml2 gobject-introspection vala autoreconfHook gtk-doc autoconf-archive yelp-tools ];
-  buildInputs = with stdenv.lib; [ gtk3 openssl libgee ]
-    ++ optional (mysqlSupport) libmysqlclient
-    ++ optional (postgresSupport) postgresql;
-
   passthru = {
     updateScript = gnome3.updateScript {
       packageName = pname;
     };
   };
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Database access library";
     homepage = "https://www.gnome-db.org/";
-    license = [ licenses.lgpl2 licenses.gpl2 ];
+    license = with licenses; [
+      # library
+      lgpl2Plus
+      # CLI tools
+      gpl2Plus
+    ];
     maintainers = teams.gnome.members;
-    platforms = platforms.linux ++ platforms.darwin;
+    platforms = platforms.unix;
   };
 }

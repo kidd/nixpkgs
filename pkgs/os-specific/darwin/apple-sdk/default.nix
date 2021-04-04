@@ -1,15 +1,10 @@
 { stdenv, fetchurl, xar, cpio, pkgs, python3, pbzx, lib, darwin-stubs, print-reexports }:
 
-let version = "10.12"; in
-
-# Ensure appleSdkVersion is up to date.
-assert stdenv.isDarwin -> stdenv.appleSdkVersion == version;
-
 let
   # sadly needs to be exported because security_tool needs it
   sdk = stdenv.mkDerivation rec {
     pname = "MacOS_SDK";
-    inherit version;
+    version = "10.12";
 
     # This URL comes from https://swscan.apple.com/content/catalogs/others/index-10.12.merged-1.sucatalog, which we found by:
     #  1. Google: site:swscan.apple.com and look for a name that seems appropriate for your version
@@ -244,6 +239,18 @@ in rec {
         ln -s "${lib.getDev sdk}/include/utmp.h"
         ln -s "${lib.getDev sdk}/include/utmpx.h"
         popd >/dev/null
+      '';
+    };
+
+    sandbox = stdenv.mkDerivation {
+      name = "apple-lib-sandbox";
+      dontUnpack = true;
+
+      installPhase = ''
+        mkdir -p $out/include $out/lib
+        ln -s "${lib.getDev sdk}/include/sandbox.h" $out/include/sandbox.h
+        cp "${darwin-stubs}/usr/lib/libsandbox.1.tbd" $out/lib
+        ln -s libsandbox.1.tbd $out/lib/libsandbox.tbd
       '';
     };
   };

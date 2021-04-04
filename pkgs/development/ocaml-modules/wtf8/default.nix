@@ -1,8 +1,10 @@
-{ lib, stdenv, fetchurl, buildDunePackage }:
+{ lib, fetchurl, buildDunePackage }:
 
 buildDunePackage rec {
   pname = "wtf8";
   version = "1.0.2";
+
+  useDune2 = true;
 
   minimumOCamlVersion = "4.02";
 

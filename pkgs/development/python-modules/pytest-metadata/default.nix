@@ -1,4 +1,4 @@
-{ lib, stdenv, buildPythonPackage, fetchPypi
+{ lib, buildPythonPackage, fetchPypi
 , pytest, setuptools_scm }:
 
 buildPythonPackage rec {
@@ -11,7 +11,7 @@ buildPythonPackage rec {
   };
 
   nativeBuildInputs = [ setuptools_scm ];
-  propagatedBuildInputs = [ pytest ];
+  buildInputs = [ pytest ];
 
   meta = with lib; {
     description = "Plugin for accessing test session metadata";

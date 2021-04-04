@@ -16,13 +16,13 @@ stdenv.mkDerivation rec {
     substituteInPlace Makefile --replace "-fno-guess-branch-probability" ""
   '';
 
-  buildFlags = [ "CC=cc" "CXX=c++" ];
-  installFlags = [ ''PREFIX=$(out)'' ];
+  buildFlags = [ "CC=${stdenv.cc.targetPrefix}cc" "CXX=${stdenv.cc.targetPrefix}c++" ];
+  installFlags = [ "PREFIX=$(out)" ];
   buildInputs = [ gmp mpir cddlib ];
 
   meta = {
     inherit version;
-    description = ''A software package for computing Gröbner fans and tropical varieties'';
+    description = "A software package for computing Gröbner fans and tropical varieties";
     license = lib.licenses.gpl2 ;
     maintainers = [lib.maintainers.raskin];
     platforms = lib.platforms.unix;

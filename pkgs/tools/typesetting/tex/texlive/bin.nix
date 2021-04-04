@@ -2,7 +2,7 @@
 , texlive
 , zlib, libiconv, libpng, libX11
 , freetype, gd, libXaw, icu, ghostscript, libXpm, libXmu, libXext
-, perl, perlPackages, python2Packages, pkg-config
+, perl, perlPackages, python3Packages, pkg-config
 , poppler, libpaper, graphite2, zziplib, harfbuzz, potrace, gmp, mpfr
 , brotli, cairo, pixman, xorg, clisp, biber, woff2, xxHash
 , makeWrapper, shortenPerlShebang
@@ -270,8 +270,8 @@ dvipng = stdenv.mkDerivation {
 
   inherit (common) src;
 
-  nativeBuildInputs = [ perl pkg-config ];
-  buildInputs = [ core/*kpathsea*/ zlib libpng freetype gd ghostscript makeWrapper ];
+  nativeBuildInputs = [ perl pkg-config makeWrapper ];
+  buildInputs = [ core/*kpathsea*/ zlib libpng freetype gd ghostscript ];
 
   preConfigure = ''
     cd texk/dvipng
@@ -281,12 +281,9 @@ dvipng = stdenv.mkDerivation {
   configureFlags = common.configureFlags
     ++ [ "--with-system-kpathsea" "--with-gs=yes" "--disable-debug" ];
 
-  enableParallelBuilding = true;
+  GS="${ghostscript}/bin/gs";
 
-  # I didn't manage to hardcode gs location by configureFlags
-  postInstall = ''
-    wrapProgram "$out/bin/dvipng" --prefix PATH : '${ghostscript}/bin'
-  '';
+  enableParallelBuilding = true;
 };
 
 
@@ -321,13 +318,13 @@ latexindent = perlPackages.buildPerlPackage rec {
 };
 
 
-pygmentex = python2Packages.buildPythonApplication rec {
+pygmentex = python3Packages.buildPythonApplication rec {
   pname = "pygmentex";
   inherit (src) version;
 
   src = lib.head (builtins.filter (p: p.tlType == "run") texlive.pygmentex.pkgs);
 
-  propagatedBuildInputs = with python2Packages; [ pygments chardet ];
+  propagatedBuildInputs = with python3Packages; [ pygments chardet ];
 
   dontBuild = true;
 

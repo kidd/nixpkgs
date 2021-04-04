@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, unzip, pkg-config, makeWrapper, ncurses }:
+{ lib, stdenv, fetchFromGitHub, unzip, pkg-config, makeWrapper, ncurses }:
 
 stdenv.mkDerivation {
   pname = "qnial";
@@ -11,7 +11,7 @@ stdenv.mkDerivation {
     owner = "vrthra";
   };
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeWrapper unzip ];
 
   preConfigure = ''
     cd build;
@@ -25,7 +25,6 @@ stdenv.mkDerivation {
   '';
 
   buildInputs = [
-     unzip
      pkg-config
      ncurses
   ];
@@ -33,8 +32,8 @@ stdenv.mkDerivation {
   meta = {
     description = "An array language from Nial Systems";
     homepage = "https://github.com/vrthra/qnial";
-    license = stdenv.lib.licenses.artistic1;
-    maintainers = [ stdenv.lib.maintainers.vrthra ];
-    platforms = stdenv.lib.platforms.linux;
+    license = lib.licenses.artistic1;
+    maintainers = [ lib.maintainers.vrthra ];
+    platforms = lib.platforms.linux;
   };
 }

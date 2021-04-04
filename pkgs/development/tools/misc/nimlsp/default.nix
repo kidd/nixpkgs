@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, srcOnly, nim }:
+{ lib, stdenv, fetchFromGitHub, srcOnly, nim }:
 let
   astpatternmatching = fetchFromGitHub {
     owner = "krux02";
@@ -31,14 +31,14 @@ stdenv.mkDerivation rec {
     export HOME=$TMPDIR
     nim -d:release -p:${astpatternmatching}/src -p:${jsonschema}/src \
       c --threads:on -d:nimcore -d:nimsuggest -d:debugCommunication \
-      -d:debugLogging -d:explicitSourcePath=${srcOnly nim.unwrapped} -d:tempDir=/tmp src/nimlsp
+      -d:debugLogging -d:explicitSourcePath=${srcOnly nim.passthru.nim} -d:tempDir=/tmp src/nimlsp
   '';
 
   installPhase = ''
     install -Dt $out/bin src/nimlsp
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Language Server Protocol implementation for Nim";
     homepage = "https://github.com/PMunch/nimlsp";
     license = licenses.mit;

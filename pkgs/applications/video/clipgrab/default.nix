@@ -1,14 +1,14 @@
-{ lib, stdenv, fetchurl, makeDesktopItem, ffmpeg_3
+{ lib, fetchurl, makeDesktopItem, ffmpeg_3
 , qmake, qttools, mkDerivation
 , qtbase, qtdeclarative, qtlocation, qtquickcontrols2, qtwebchannel, qtwebengine
 }:
 
 mkDerivation rec {
   pname = "clipgrab";
-  version = "3.9.5";
+  version = "3.9.6";
 
   src = fetchurl {
-    sha256 = "1p8pqa5s70basdm2zpmahc54shsxrr0fr7chvv425n5a9sqba4dh";
+    sha256 = "sha256-1rQu2Gh9PKSbC0tuQxLwFhzy280z4obpa+eXvDBzDW0=";
     # The .tar.bz2 "Download" link is a binary blob, the source is the .tar.gz!
     url = "https://download.clipgrab.org/${pname}-${version}.tar.gz";
   };

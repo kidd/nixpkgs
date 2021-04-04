@@ -1,4 +1,4 @@
-{ lib, stdenv
+{ lib
 , buildPythonPackage
 , pkgs
 , isPyPy
@@ -19,10 +19,10 @@ buildPythonPackage rec {
     sha256 = "1fp3d3z2grb1ls97smjkraazpxnvajda2d1g1378s6gzmda2jvjd";
   };
 
-  buildInputs = [ pkgs.makeWrapper ];
+  nativeBuildInputs = [ pkgs.makeWrapper ];
 
   propagatedBuildInputs = [ pkgs.rtmpdump pycrypto requests ]
-    ++ stdenv.lib.optionals isPy27 [ singledispatch futures ];
+    ++ lib.optionals isPy27 [ singledispatch futures ];
 
   postInstall = ''
     wrapProgram $out/bin/livestreamer --prefix PATH : ${pkgs.rtmpdump}/bin

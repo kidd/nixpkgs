@@ -74,7 +74,7 @@ in {
       musicDirectory = mkOption {
         type = with types; either path (strMatching "(http|https|nfs|smb)://.+");
         default = "${cfg.dataDir}/music";
-        defaultText = ''''${dataDir}/music'';
+        defaultText = "\${dataDir}/music";
         description = ''
           The directory or NFS/SMB network share where MPD reads music from. If left
           as the default value this directory will automatically be created before
@@ -86,7 +86,7 @@ in {
       playlistDirectory = mkOption {
         type = types.path;
         default = "${cfg.dataDir}/playlists";
-        defaultText = ''''${dataDir}/playlists'';
+        defaultText = "\${dataDir}/playlists";
         description = ''
           The directory where MPD stores playlists. If left as the default value
           this directory will automatically be created before the MPD server starts,
@@ -155,7 +155,7 @@ in {
       dbFile = mkOption {
         type = types.nullOr types.str;
         default = "${cfg.dataDir}/tag_cache";
-        defaultText = ''''${dataDir}/tag_cache'';
+        defaultText = "\${dataDir}/tag_cache";
         description = ''
           The path to MPD's database. If set to <literal>null</literal> the
           parameter is omitted from the configuration.
@@ -213,7 +213,9 @@ in {
       description = "Music Player Daemon Socket";
       wantedBy = [ "sockets.target" ];
       listenStreams = [
-        "${optionalString (cfg.network.listenAddress != "any") "${cfg.network.listenAddress}:"}${toString cfg.network.port}"
+        (if pkgs.lib.hasPrefix "/" cfg.network.listenAddress
+          then cfg.network.listenAddress
+          else "${optionalString (cfg.network.listenAddress != "any") "${cfg.network.listenAddress}:"}${toString cfg.network.port}")
       ];
       socketConfig = {
         Backlog = 5;

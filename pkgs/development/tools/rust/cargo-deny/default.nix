@@ -7,23 +7,23 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "cargo-deny";
-  version = "0.8.5";
+  version = "0.8.9";
 
   src = fetchFromGitHub {
     owner = "EmbarkStudios";
     repo = pname;
     rev = version;
-    sha256 = "01czsnhlvs78fpx1kpi75386657jmlrqpsj4474nxmgcs75igncx";
+    sha256 = "sha256-K8lNo2XmHzgbaVCMNvwDwr86hrXBPws9v3HD8ku+D6w=";
   };
 
-  cargoSha256 = "1d5vh6cifkvqxmbgc2z9259q8879fjw016z959hfivv38rragqbr";
+  cargoSha256 = "sha256-spTy9vzldzqu66904wRVwAeH1rNOQ3WeC6miJkRiAGg=";
 
   doCheck = false;
 
   nativeBuildInputs = [ perl pkg-config ];
 
   buildInputs = [ openssl  ]
-    ++ stdenv.lib.optionals stdenv.isDarwin [ Security libiconv curl ];
+    ++ lib.optionals stdenv.isDarwin [ Security libiconv curl ];
 
   meta = with lib; {
     description = "Cargo plugin to generate list of all licenses for a crate";

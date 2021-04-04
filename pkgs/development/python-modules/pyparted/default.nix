@@ -24,7 +24,7 @@ buildPythonPackage rec {
     sed -i -e '
       s|e\.path\.startswith("/tmp/temp-device-")|"temp-device-" in e.path|
     ' tests/test__ped_ped.py
-  '' + stdenv.lib.optionalString stdenv.isi686 ''
+  '' + lib.optionalString stdenv.isi686 ''
     # remove some integers in this test case which overflow on 32bit systems
     sed -i -r -e '/class *UnitGetSizeTestCase/,/^$/{/[0-9]{11}/d}' \
       tests/test__ped_ped.py
@@ -38,7 +38,7 @@ buildPythonPackage rec {
     PATH="${pkgs.parted}/sbin:$PATH"
   '';
 
-  nativeBuildInputs = [ pkgs.pkgconfig ];
+  nativeBuildInputs = [ pkgs.pkg-config ];
   checkInputs = [ six ];
   propagatedBuildInputs = [ pkgs.parted ];
 

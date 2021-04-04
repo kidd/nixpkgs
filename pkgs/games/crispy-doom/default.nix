@@ -1,14 +1,14 @@
-{ lib, stdenv, autoreconfHook, pkg-config, SDL2, SDL2_mixer, SDL2_net, fetchFromGitHub, python }:
+{ lib, stdenv, autoreconfHook, pkg-config, SDL2, SDL2_mixer, SDL2_net, fetchFromGitHub, python2 }:
 
 stdenv.mkDerivation rec {
   pname = "crispy-doom";
-  version = "5.9.2";
+  version = "5.10.1";
 
   src = fetchFromGitHub {
     owner = "fabiangreffrath";
     repo = pname;
     rev = "${pname}-${version}";
-    sha256 = "0fkw9z66sjcz7k528wyla6mgi4impqimn93yhqmc194ycrjirraa";
+    sha256 = "sha256-5doytVxemqaXWXiqDSQUEAe71xmY0pOLASj/NJNyM5g=";
   };
 
   postPatch = ''
@@ -16,9 +16,11 @@ stdenv.mkDerivation rec {
     for script in $(grep -lr '^#!/usr/bin/env python$'); do patchShebangs $script; done
   '';
 
-  nativeBuildInputs = [ autoreconfHook pkg-config python ];
+  nativeBuildInputs = [ autoreconfHook pkg-config python2 ];
   buildInputs = [ SDL2 SDL2_mixer SDL2_net ];
   enableParallelBuilding = true;
+
+  strictDeps = true;
 
   meta = {
     homepage = "http://fabiangreffrath.github.io/crispy-doom";

@@ -4,13 +4,13 @@
 
 stdenv.mkDerivation rec {
   pname = "git-repo";
-  version = "2.11.1";
+  version = "2.13.1";
 
   src = fetchFromGitHub {
     owner = "android";
     repo = "tools_repo";
     rev = "v${version}";
-    sha256 = "sha256-6XsjxTYmjr/3smwwS7c+Mq1sqfgKAhWzHOY8TWlIKHU=";
+    sha256 = "sha256-D6gh14XOZ6Fjypfhg9l5ozPhyf6u6M0Wc8HdagdPM/Q=";
   };
 
   patches = [ ./import-ssl-module.patch ];
@@ -45,7 +45,7 @@ stdenv.mkDerivation rec {
     '';
     homepage = "https://android.googlesource.com/tools/repo";
     license = licenses.asl20;
-    maintainers = [ maintainers.primeos ];
+    maintainers = [ ];
     platforms = platforms.unix;
   };
 }
